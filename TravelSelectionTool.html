@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Selection - October 1-7, 2025</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Gilda+Display&display=swap" rel="stylesheet">
+  
+  <!-- React & Babel from CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --primary: #1a3a52;
+      --accent: #c9915d;
+      --accent-light: #ddb88c;
+      --bg: #faf9f7;
+      --card-bg: #ffffff;
+      --text: #2c3e50;
+      --text-light: #6c7a89;
+      --border: #e8e5e0;
+      --success: #2d8659;
+      --shadow: rgba(26, 58, 82, 0.08);
+      --shadow-hover: rgba(26, 58, 82, 0.15);
+    }
+    
+    body {
+      font-family: 'Crimson Pro', serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 120px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, #2c5570 100%);
+      border-radius: 16px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0%, 100% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+    }
+    
+    h1 {
+      font-family: 'Gilda Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .progress-container {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .progress-text {
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+    
+    .progress-count {
+      font-weight: 600;
+      color: var(--accent);
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .section {
+      margin-bottom: 48px;
+      animation: fadeIn 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .section:nth-child(1) { animation-delay: 0.1s; }
+    .section:nth-child(2) { animation-delay: 0.2s; }
+    .section:nth-child(3) { animation-delay: 0.3s; }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    
+    .section-icon {
+      font-size: 1.5rem;
+    }
+    
+    h2 {
+      font-family: 'Gilda Display', serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--primary);
+      letter-spacing: 0.3px;
+    }
+    
+    .subsection {
+      margin-bottom: 32px;
+    }
+    
+    .subsection-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 16px;
+      padding-left: 4px;
+    }
+    
+    .options-grid {
+      display: grid;
+      gap: 12px;
+    }
+    
+    .option-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .option-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .option-card:hover {
+      border-color: var(--accent-light);
+      box-shadow: 0 4px 16px var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+    
+    .option-card.selected {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, #fffbf5 0%, #ffffff 100%);
+    }
+    
+    .option-card.selected::before {
+      transform: scaleX(1);
+    }
+    
+    .option-card.recommended {
+      border-color: var(--accent-light);
+    }
+    
+    .option-card.recommended::after {
+      content: '⭐ Recommended';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    
+    .option-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .radio-button {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+      position: relative;
+      transition: all 0.2s;
+    }
+    
+    .option-card:hover .radio-button {
+      border-color: var(--accent);
+    }
+    
+    .option-card.selected .radio-button {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+    
+    .option-card.selected .radio-button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+    }
+    
+    .option-content {
+      flex: 1;
+    }
+    
+    .option-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    
+    .option-details {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    
+    .option-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-light);
+    }
+    
+    .price {
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 1.05rem;
+    }
+    
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 20px;
+      box-shadow: 0 -4px 16px var(--shadow);
+      z-index: 100;
+    }
+    
+    .bottom-bar-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      flex: 1;
+      min-width: 200px;
+      justify-content: center;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(201, 145, 93, 0.4);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background: white;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+    
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    
+    .validation-message {
+      flex: 1;
+      color: var(--text-light);
+      font-size: 0.95rem;
+      padding-left: 12px;
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeIn 0.3s;
+      padding: 20px;
+    }
+    
+    .modal {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .modal-icon {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .modal h3 {
+      font-family: 'Gilda Display', serif;
+      font-size: 1.75rem;
+      text-align: center;
+      margin-bottom: 16px;
+      color: var(--primary);
+    }
+    
+    .modal p {
+      text-align: center;
+      color: var(--text-light);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 16px 140px;
+      }
+      
+      header {
+        padding: 30px 20px;
+        margin-bottom: 40px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .bottom-bar-content {
+        flex-direction: column;
+      }
+      
+      .btn-primary {
+        width: 100%;
+      }
+      
+      .validation-message {
+        text-align: center;
+        padding-left: 0;
+      }
+      
+      .modal {
+        padding: 30px 20px;
+      }
+      
+      .modal-actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+// Trip configuration data
+    const tripConfig = {
+      tripId: 'oct-1-7-2025',
+      title: 'October 1-7, 2025',
+      subtitle: 'NYC → London → Berlin',
+      
+      sections: [
+        {
+          id: 'flights',
+          title: 'Flights',
+          icon: '✈️',
+          items: [
+            {
+              id: 'flight1',
+              label: 'Flight 1: SFO → JFK',
+              options: [
+                {
+                  id: 'united-ua2552',
+                  title: 'United UA2552',
+                  details: '7:15 AM departure • Polaris Business Class • Nonstop • 5h 35m',
+                  price: '$847',
+                  recommended: true
+                },
+                {
+                  id: 'delta-dl1583',
+                  title: 'Delta DL1583',
+                  details: '8:30 AM departure • Delta One • Nonstop • 5h 42m',
+                  price: '$923'
+                },
+                {
+                  id: 'american-aa278',
+                  title: 'American AA278',
+                  details: '10:15 AM departure • Flagship Business • Nonstop • 5h 38m',
+                  price: '$856'
+                }
+              ]
+            },
+            {
+              id: 'flight2',
+              label: 'Flight 2: JFK → LHR',
+              options: [
+                {
+                  id: 'ba-ba112',
+                  title: 'British Airways BA112',
+                  details: '8:15 PM departure • Club World Business • Nonstop • 6h 50m',
+                  price: '$3,485',
+                  recommended: true
+                },
+                {
+                  id: 'virgin-vs4',
+                  title: 'Virgin Atlantic VS4',
+                  details: '6:30 PM departure • Upper Class • Nonstop • 7h 5m',
+                  price: '$3,620'
+                },
+                {
+                  id: 'aa-aa106',
+                  title: 'American AA106',
+                  details: '7:45 PM departure • Flagship Business • Nonstop • 6h 55m',
+                  price: '$3,340'
+                }
+              ]
+            },
+            {
+              id: 'flight3',
+              label: 'Flight 3: LHR → BER',
+              options: [
+                {
+                  id: 'ba-ba982',
+                  title: 'British Airways BA982',
+                  details: '11:55 AM departure • Economy (under 2h flight) • Nonstop • 1h 50m',
+                  price: '$185',
+                  recommended: true
+                },
+                {
+                  id: 'easyjet-u21833',
+                  title: 'easyJet U21833',
+                  details: '1:35 PM departure • Economy • Nonstop • 1h 45m',
+                  price: '$142'
+                }
+              ]
+            },
+            {
+              id: 'flight4',
+              label: 'Flight 4: BER → SFO',
+              options: [
+                {
+                  id: 'united-via-fra',
+                  title: 'United via Frankfurt',
+                  details: '6:00 AM BER→FRA, 10:50 AM FRA→SFO • Polaris Business • Total: 15h 10m',
+                  price: '$4,120',
+                  recommended: true,
+                  note: 'Only available option (no direct flights)'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'hotels',
+          title: 'Hotels',
+          icon: '🏨',
+          items: [
+            {
+              id: 'hotel-nyc',
+              label: 'NYC Hotel (Oct 1-3)',
+              options: [
+                {
+                  id: 'hyatt-centric-wall-street',
+                  title: 'Hyatt Centric Wall Street',
+                  details: 'Financial District • King Room, High Floor • Excellent location • Near transit',
+                  price: '$285/night',
+                  recommended: true
+                },
+                {
+                  id: 'marriott-downtown',
+                  title: 'Marriott Downtown Manhattan',
+                  details: 'Financial District • King Room with City View • Modern amenities',
+                  price: '$295/night'
+                }
+              ]
+            },
+            {
+              id: 'hotel-london',
+              label: 'London Hotel (Oct 3-5)',
+              options: [
+                {
+                  id: 'london-hilton-park-lane',
+                  title: 'London Hilton on Park Lane',
+                  details: 'Mayfair • Executive King Room, High Floor • Park views • Central location',
+                  price: '£245/night',
+                  recommended: true
+                },
+                {
+                  id: 'jw-marriott-grosvenor',
+                  title: 'JW Marriott Grosvenor House',
+                  details: 'Mayfair • Deluxe King Room • Elegant classic property • Park Lane location',
+                  price: '£260/night'
+                }
+              ]
+            },
+            {
+              id: 'hotel-berlin',
+              label: 'Berlin Hotel (Oct 5-7)',
+              options: [
+                {
+                  id: 'hampton-alexanderplatz',
+                  title: 'Hampton by Hilton Alexanderplatz',
+                  details: 'Central Berlin • King Room, High Floor • Walking distance to attractions',
+                  price: '€145/night',
+                  recommended: true
+                },
+                {
+                  id: 'hilton-berlin',
+                  title: 'Hilton Berlin',
+                  details: 'Mitte District • Executive King Room • Full-service property • Near transit',
+                  price: '€220/night'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'restaurants',
+          title: 'Restaurants',
+          icon: '🍽️',
+          items: [
+            {
+              id: 'restaurant-nyc',
+              label: 'NYC Dinner Reservations',
+              options: [
+                {
+                  id: 'manhatta',
+                  title: 'Manhatta',
+                  details: '60th floor of 28 Liberty • Stunning skyline views • Contemporary American',
+                  price: '$85-150/person',
+                  recommended: true
+                },
+                {
+                  id: 'crown-shy',
+                  title: 'Crown Shy',
+                  details: 'Financial District • Michelin 1-star • New American cuisine • Intimate setting',
+                  price: '$95-160/person'
+                }
+              ]
+            },
+            {
+              id: 'restaurant-london',
+              label: 'London Dinner Reservations',
+              options: [
+                {
+                  id: 'pavyllon-london',
+                  title: 'Pavyllon London',
+                  details: 'Four Seasons Park Lane • Michelin 1-star • Chef Yannick Alléno • French fine dining',
+                  price: '£120-180/person',
+                  recommended: true
+                },
+                {
+                  id: 'murano',
+                  title: 'Murano',
+                  details: 'Mayfair • Michelin 1-star • Modern European • Angela Hartnett',
+                  price: '£90-140/person'
+                }
+              ]
+            },
+            {
+              id: 'restaurant-berlin',
+              label: 'Berlin Dinner Reservations',
+              options: [
+                {
+                  id: 'rutz',
+                  title: 'Rutz',
+                  details: 'Mitte • Michelin 3-star • Berlin\'s only 3-star • Contemporary German',
+                  price: '€250-350/person',
+                  recommended: true
+                },
+                {
+                  id: 'skykitchen',
+                  title: 'Skykitchen',
+                  details: 'Andels Hotel • Michelin 1-star • 12th floor panoramic views • Modern European',
+                  price: '€120-180/person'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    function App() {
+      const [selections, setSelections] = useState({});
+      const [sending, setSending] = useState(false);
+      const [showSuccess, setShowSuccess] = useState(false);
+
+      // Load from localStorage on mount
+      useEffect(() => {
+        const saved = localStorage.getItem('tripSelections');
+        if (saved) {
+          try {
+            setSelections(JSON.parse(saved));
+          } catch (e) {
+            console.error('Failed to load saved selections:', e);
+          }
+        } else {
+          // Pre-select recommended options
+          const defaultSelections = {};
+          tripConfig.sections.forEach(section => {
+            section.items.forEach(item => {
+              const recommended = item.options.find(opt => opt.recommended);
+              if (recommended) {
+                defaultSelections[item.id] = recommended.id;
+              }
+            });
+          });
+          setSelections(defaultSelections);
+        }
+      }, []);
+
+      // Save to localStorage whenever selections change
+      useEffect(() => {
+        localStorage.setItem('tripSelections', JSON.stringify(selections));
+      }, [selections]);
+
+      const handleSelect = (itemId, optionId) => {
+        setSelections(prev => ({ ...prev, [itemId]: optionId }));
+      };
+
+      const getTotalItems = () => {
+        return tripConfig.sections.reduce((acc, section) => 
+          acc + section.items.length, 0
+        );
+      };
+
+      const getCompletedItems = () => {
+        return Object.keys(selections).length;
+      };
+
+      const isComplete = () => {
+        return getCompletedItems() === getTotalItems();
+      };
+
+      const generateSummary = () => {
+        let summary = `Hi Lisa,\n\nHere are my selections for the October 1-7 trip:\n\n`;
+        
+        tripConfig.sections.forEach(section => {
+          summary += `${section.title.toUpperCase()}:\n`;
+          section.items.forEach(item => {
+            const selectedId = selections[item.id];
+            const option = item.options.find(opt => opt.id === selectedId);
+            if (option) {
+              summary += `• ${item.label}: ${option.title}\n`;
+            }
+          });
+          summary += `\n`;
+        });
+        
+        summary += `Please proceed with booking.\n\nThanks,\nAnya`;
+        return summary;
+      };
+
+      const sendEmail = () => {
+        const subject = encodeURIComponent('Trip Selections: October 1-7');
+        const body = encodeURIComponent(generateSummary());
+        window.location.href = `mailto:lisa.esterhuizen0@gmail.com?subject=${subject}&body=${body}`;
+        
+        // Show success message
+        setTimeout(() => setShowSuccess(true), 500);
+      };
+
+      const handleReset = () => {
+        if (confirm('Clear all selections and start over?')) {
+          setSelections({});
+          localStorage.removeItem('tripSelections');
+        }
+      };
+
+      const progress = (getCompletedItems() / getTotalItems()) * 100;
+
+      return (
+        <div className="container">
+          <header>
+            <h1>{tripConfig.title}</h1>
+            <p className="subtitle">{tripConfig.subtitle}</p>
+          </header>
+
+          <div className="progress-container">
+            <div className="progress-header">
+              <span className="progress-text">
+                <span className="progress-count">{getCompletedItems()}</span> of {getTotalItems()} selections made
+              </span>
+              <span className="progress-text">{Math.round(progress)}% complete</span>
+            </div>
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+            </div>
+          </div>
+
+          {tripConfig.sections.map(section => (
+            <div key={section.id} className="section">
+              <div className="section-header">
+                <span className="section-icon">{section.icon}</span>
+                <h2>{section.title}</h2>
+              </div>
+
+              {section.items.map(item => (
+                <div key={item.id} className="subsection">
+                  <h3 className="subsection-title">{item.label}</h3>
+                  <div className="options-grid">
+                    {item.options.map(option => (
+                      <div
+                        key={option.id}
+                        className={`option-card ${selections[item.id] === option.id ? 'selected' : ''} ${option.recommended ? 'recommended' : ''}`}
+                        onClick={() => handleSelect(item.id, option.id)}
+                      >
+                        <div className="option-header">
+                          <div className="radio-button"></div>
+                          <div className="option-content">
+                            <div className="option-title">{option.title}</div>
+                            <div className="option-details">{option.details}</div>
+                            {option.note && <div className="option-details" style={{ fontStyle: 'italic', marginTop: '8px' }}>Note: {option.note}</div>}
+                            <div className="option-meta">
+                              <span className="price">{option.price}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+
+          <div className="bottom-bar">
+            <div className="bottom-bar-content">
+              {!isComplete() && (
+                <span className="validation-message">
+                  Please complete {getTotalItems() - getCompletedItems()} more selection{getTotalItems() - getCompletedItems() !== 1 ? 's' : ''}
+                </span>
+              )}
+              
+              <button
+                className="btn btn-primary"
+                onClick={sendEmail}
+                disabled={!isComplete() || sending}
+              >
+                <span>📧</span>
+                Email My Selections
+              </button>
+              
+              <button
+                className="btn btn-secondary"
+                onClick={handleReset}
+                disabled={sending}
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+
+{showSuccess && (
+            <div className="modal-overlay" onClick={() => setShowSuccess(false)}>
+              <div className="modal" onClick={e => e.stopPropagation()}>
+                <div className="modal-icon">📧</div>
+                <h3>Email Opening...</h3>
+                <p>Your email client should open with your selections pre-filled. Just click Send!</p>
+                
+                <div className="modal-actions">
+                  <button className="btn btn-primary" onClick={() => setShowSuccess(false)}>
+                    Got It
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
