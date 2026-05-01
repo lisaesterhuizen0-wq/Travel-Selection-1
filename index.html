@@ -815,14 +815,14 @@
           summary += `\n`;
         });
         
-        summary += `Please proceed with booking.\n\nThanks,\nAnya`;
+        summary += `Please proceed with booking.\n\nThanks,\n[Your Name]`;
         return summary;
       };
 
       const sendEmail = () => {
         const subject = encodeURIComponent('Trip Selections: October 1-7');
         const body = encodeURIComponent(generateSummary());
-        window.location.href = `mailto:lisa.esterhuizen0@gmail.com?subject=${subject}&body=${body}`;
+        window.location.href = `mailto:assistant@example.com?subject=${subject}&body=${body}`;
         
         // Show success message
         setTimeout(() => setShowSuccess(true), 500);
