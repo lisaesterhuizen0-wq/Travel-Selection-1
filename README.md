@@ -24,7 +24,7 @@ Open `index.html` in any browser, or visit the live demo link above.
 
 ## Notes
 
-The form references a fictional traveller ("Anya Sharma") because that was the bootcamp persona, and the destination email is hard-coded for the demo. Both are on the polish list for a future iteration.
+Trip data and the destination email (`assistant@example.com`) are placeholders. Swap them in the config block near the top of `index.html` to retarget the form to a real trip.
 
 ---
 
